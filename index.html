@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .chatbox {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 400px;
+            overflow-y: scroll;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+        }
+        .chatbox p {
+            margin: 5px 0;
+        }
+        .user {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .bot {
+            color: #28a745;
+            font-weight: bold;
+        }
+        form {
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>RAG Chatbot</h1>
+        <div class="chatbox" id="chatbox">
+            <p class="bot">Bot: Hello! I'm a RAG Chatbot. Ask me anything about the documents or CSV data.</p>
+        </div>
+        <form id="chat-form" action="/chat" method="POST">
+            <input type="text" name="query" id="query" placeholder="Type your question here..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        // Scroll to the bottom of the chatbox
+        function scrollToBottom() {
+            const chatbox = document.getElementById('chatbox');
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        // On form submission, append the user message and bot response
+        document.getElementById('chat-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const queryInput = document.getElementById('query');
+            const query = queryInput.value.trim();
+            if (!query) return;
+
+            // Append user message
+            const chatbox = document.getElementById('chatbox');
+            chatbox.innerHTML += `<p class="user">You: ${query}</p>`;
+            queryInput.value = '';
+            scrollToBottom();
+
+            // Send query to the server
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `query=${encodeURIComponent(query)}`
+                });
+                const data = await response.json();
+                const botResponse = data.response;
+
+                // Append bot response
+                chatbox.innerHTML += `<p class="bot">Bot: ${botResponse}</p>`;
+                scrollToBottom();
+            } catch (error) {
+                chatbox.innerHTML += `<p class="bot">Bot: Error: ${error.message}</p>`;
+                scrollToBottom();
+            }
+        });
+    </script>
+</body>
+</html>
