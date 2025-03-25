@@ -27,8 +27,8 @@ This project implements a Retrieval-Augmented Generation (RAG) chatbot using Fla
 ## Installation and Setup  
 1. **Clone the Repository**  
    ```bash
-   git clone <repo_url>
-   cd <repo_name>
+   git clone https://github.com/H3PRIYA/RAG-CHATBOX
+   cd RAG-CHATBOX
    ```
 2. **Create a Virtual Environment (Optional but Recommended)**  
    ```bash
