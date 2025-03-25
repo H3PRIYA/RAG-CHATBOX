@@ -51,8 +51,9 @@ This project implements a Retrieval-Augmented Generation (RAG) chatbot using Fla
 - Enter queries related to the uploaded files.  
 - The chatbot will process and return relevant answers.  
 
-## Future Improvements  
-- Add support for additional file types.  
-- Enhance query processing with more advanced NLP techniques.  
-- Implement a better UI for an improved user experience.  
+## Innovations and Enhancements
+- Dynamic CSV Handling: Used fuzzy matching to map query keywords to CSV columns, making the chatbot adaptable to any CSV file.
+- Performance Boost: Installed python-Levenshtein to speed up fuzzy matching, improving performance.
+- Web Interface: Built a Flask app with a responsive HTML interface and real-time query handling using AJAX.
+- Error Handling: Added checks to display user-friendly error messages if the chatbot fails to process queries.
 
